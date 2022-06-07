@@ -5,12 +5,16 @@
     <div id="maindiv">
         <h1>WebCam-Test
         </h1>
-        <video id="video" width="640" height="480" autoplay></video>
-
-
-        <button id="start">START</button>
-        <button id="stop">STOP</button>
-        <canvas id="canvas" width="640" height="480"></canvas>
+        <div style="position: relative; height: 480px;width: 650px;">
+        <video id="video" width="640" height="480" autoplay style="position:absolute; left:0;top:0;"></video>
+        <canvas id="buttonCanvas" width="640" height="480" style="position:absolute; left:0;top:0;"></canvas>
+        </div>
+        <div><button id="start">START</button>
+            <button id="stop">STOP</button></div>
+        
+        <canvas id="canvas" width="640" height="480" ></canvas>
+        <canvas id="prevCanvas" width="640" height="480" ></canvas>
+        
         <script src="clock.js"></script>
         <script src="app.js"></script>
         <script src="fucntions.js"></script>
