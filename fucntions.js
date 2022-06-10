@@ -1,3 +1,5 @@
+// let buttonCanvas = document.querySelector("#buttonCanvas");
+// let buttonContext = buttonCanvas.getContext("2d");
 //*************FUNCTIONS*************** */
 //Small test function to see if the generated grid Works as intended
 function stripes() {
@@ -342,20 +344,66 @@ function openingOperation(pixelGrid) {
 }
 
 //checks a area for interaction returns true if numbers of active pixels exceeds threshold
-function checkInteraktion(pixelGrid, TL, BL, TR, BR, thresHold) {
+function checkInteraktion(pixelGrid, Box, thresHold) {
   let sum = 0;
-  for (let y = TL; y < BR; y++) {
-    for (let x = BL; x < TR; x++) {
+  let xStart = Box[0]
+  let yStart = Box[1]
+  let xEnd = Box[2]
+  let yEnd = Box[3]
+console.log("checking x:" + xStart+ " to y:" +yStart);
+  for (let y = yStart; y < yStart+yEnd; y++) {
+    for (let x = xStart; x < xStart+xEnd; x++) {
       if (pixelGrid[y][x] > 0) {
         sum++;
       }
     }
- 
+
   }
-  
+
   if (sum >= thresHold) {
+    handleInteraction(Box);
     return true;
   } else {
     return false;
   }
+}
+
+function handleInteraction(Box){
+  let buttonType = Box[4];
+  console.log(Box);
+  if (buttonType == "Start"){
+    buttonContext.clearRect(Box[0],Box[1],Box[2],Box[3]);
+    delete choordsToCheck["Start"];
+    spawnNewBox();
+    //need to make a function to remove the block inte the other canvas aswell. aka remove from Coordinate list
+
+  }
+  if (buttonType =="test"){
+    console.log("test")
+  }
+  if (buttonType =="point"){
+    score++;
+    displayScore.innerHTML="Score: "+score;
+    buttonContext.clearRect(Box[0],Box[1],Box[2],Box[3]);
+    console.log("you got one");
+    delete choordsToCheck["point"];
+    spawnNewBox();
+  }
+
+}
+
+
+
+function spawnNewBox(){
+  let boxSize = 50;
+  let x = Math.floor(getRandomArbitrary(0, 590));
+  let y = Math.floor(getRandomArbitrary(0,430));
+  console.log("this point spawned at "+ x+ " " +y);
+  createBox(buttonContext,[x,y,boxSize,boxSize,"point"],"*")
+  console.log(choordsToCheck);
+  
+}
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
 }
