@@ -14,5 +14,7 @@ To run it i used live server in VS-code but do as you usally do when running a h
 When you launch the app you will see the main game window with a startbutton on the lower right corner. move your hand over the square to begin the game. When the game begin you have 10 seconds to "catch" as many "*"-squares as you can.
 Once your 10 seconds of playtime is over you will see your score. To play again just reload the page.
 
+Or simply use use my heroku-link https://webcamera-jstest.herokuapp.com/
+
 ## Futher implementations
 Adding more games and cleaning up the code would be nice... (its a mess right now);
