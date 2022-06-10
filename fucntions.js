@@ -140,7 +140,7 @@ function findSmallestValue(pixelGrid) {
       }
     }
   }
-  console.log("Största värdet :" + max + "  minsta värdet:" + min);
+  //console.log("Största värdet :" + max + "  minsta värdet:" + min);
 }
 //Edge detection
 function prewittOperator(pixelGrid) {
@@ -350,7 +350,7 @@ function checkInteraktion(pixelGrid, Box, thresHold) {
   let yStart = Box[1]
   let xEnd = Box[2]
   let yEnd = Box[3]
-console.log("checking x:" + xStart+ " to y:" +yStart);
+//console.log("checking x:" + xStart+ " to y:" +yStart);
   for (let y = yStart; y < yStart+yEnd; y++) {
     for (let x = xStart; x < xStart+xEnd; x++) {
       if (pixelGrid[y][x] > 0) {
@@ -370,26 +370,35 @@ console.log("checking x:" + xStart+ " to y:" +yStart);
 
 function handleInteraction(Box){
   let buttonType = Box[4];
-  console.log(Box);
+ // console.log(Box);
   if (buttonType == "Start"){
-    buttonContext.clearRect(Box[0],Box[1],Box[2],Box[3]);
+    removeBox(Box);
     delete choordsToCheck["Start"];
-    spawnNewBox();
+    startGame();
+   
     //need to make a function to remove the block inte the other canvas aswell. aka remove from Coordinate list
 
   }
   if (buttonType =="test"){
-    console.log("test")
+    
   }
   if (buttonType =="point"){
-    score++;
+    
+    
     displayScore.innerHTML="Score: "+score;
-    buttonContext.clearRect(Box[0],Box[1],Box[2],Box[3]);
-    console.log("you got one");
+    removeBox(Box);
+    
     delete choordsToCheck["point"];
+    if(isGamerunning){
+      score++;
     spawnNewBox();
+    }
   }
 
+}
+
+function removeBox(Box){
+  buttonContext.clearRect(640-Box[2]-Box[0],Box[1],Box[2],Box[3]);
 }
 
 
@@ -398,9 +407,9 @@ function spawnNewBox(){
   let boxSize = 50;
   let x = Math.floor(getRandomArbitrary(0, 590));
   let y = Math.floor(getRandomArbitrary(0,430));
-  console.log("this point spawned at "+ x+ " " +y);
+  
   createBox(buttonContext,[x,y,boxSize,boxSize,"point"],"*")
-  console.log(choordsToCheck);
+ 
   
 }
 

@@ -1,21 +1,34 @@
 let video = document.querySelector("#video");
+
 let canvas = document.querySelector("#canvas");
 let context = canvas.getContext("2d");
 let main = document.getElementById("maindiv");
 let buttonCanvas = document.querySelector("#buttonCanvas");
 let buttonContext = buttonCanvas.getContext("2d");
-let displayRunTime = document.querySelector("#runtime")
+let displayRunTime = document.querySelector("#runtime");
 let prevCanvas = document.querySelector("#prevCanvas");
 let prevContext = prevCanvas.getContext("2d");
 let runTime = 0;
 let displayScore = document.querySelector("#score");
 let score = 0;
+let isCountdown = false;
+let countDown = 0;
+let isGamerunning = false;
+
 //Draws image every tick
+
 // This handles the display of the manipulated camera image
 main.addEventListener("ticks", function () {
   runTime++;
-  
-  displayRunTime.innerHTML = "Time Running: " + runTime;
+
+  if (isCountdown) {
+    startGame();
+  }
+  if(isGamerunning){
+    gameRunning();
+  }
+
+  displayRunTime.innerHTML = "Time: " + Math.floor(countDown / 10);
   let prevImgData = prevContext.getImageData(0, 0, 640, 480);
   let prevGrid = makeGridOfImage(prevImgData);
 
@@ -40,26 +53,81 @@ main.addEventListener("ticks", function () {
   imageData = gridToImage(imageData, grid);
 
   //check if interact with blue test box
-  if(runTime >= 100){
-  checkAllZones(grid);
-   } //console.log("YOU FUCKING MADE IT DUDE");
+  if (runTime >= 20) {
+    checkAllZones(grid);
+  } //console.log("YOU FUCKING MADE IT DUDE");
 
   //***************************** */
 
   context.putImageData(imageData, 0, 0);
 });
+function gameRunning(){
+  
+  if(countDown>0){
+    countDown--;
+  }
+  if(countDown <=0){
+    isGamerunning=false;
+    ctx.clearRect(0, 0, 640, 480);
+      ctx.beginPath();
+      ctx.font = "50px Georgia";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#000000";
+      ctx.fillText("game over, your score is: "+ score, 640 / 2, 480 / 2);
+      displayScore.innerHTML="Score: "+score;
+  }
+}
+
+function startGame() {
+  ctx = buttonContext;
+  if (!isCountdown) {
+    countDown = runTime / 10;
+    isCountdown = true;
+  } else {
+    ctx.clearRect(0, 0, 640, 480);
+    if (Math.floor(runTime / 10 - countDown) <= 1) {
+      ctx.clearRect(0, 0, 640, 480);
+      ctx.beginPath();
+      ctx.font = "200px Georgia";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#000000";
+      ctx.fillText("3", 640 / 2, 480 / 2);
+    }
+    if (Math.floor(runTime / 10 - countDown) == 2) {
+      ctx.clearRect(0, 0, 640, 480);
+      ctx.beginPath();
+      ctx.font = "200px Georgia";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#000000";
+      ctx.fillText("2", 640 / 2, 480 / 2);
+    }
+    if (Math.floor(runTime / 10 - countDown) == 3) {
+      ctx.clearRect(0, 0, 640, 480);
+      ctx.beginPath();
+      ctx.font = "200px Georgia";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#000000";
+      ctx.fillText("1", 640 / 2, 480 / 2);
+    }
+    if (Math.floor(runTime / 10 - countDown) >= 4) {
+      spawnNewBox();
+      isGamerunning =true;
+      isCountdown = false;
+      countDown=100;
+    }
+  }
+}
 
 //kommer inte fungera... koppla zonerna till specifika funktioner....
 function checkAllZones(grid) {
-  for (key in choordsToCheck){
+  for (key in choordsToCheck) {
     //console.log(element)
-    checkInteraktion(
-      grid,
-      choordsToCheck[key],
-      50,
-    
-    );
-  };
+    checkInteraktion(grid, choordsToCheck[key], 50);
+  }
 }
 
 //Create new clock and add it to the main div
@@ -71,25 +139,27 @@ var choordsToCheck = {};
 function createBox(ctx, coordinates, text) {
   ctx.beginPath();
   choordsToCheck[coordinates[4]] = coordinates;
+  let xChord = 640 - coordinates[0] - coordinates[2];
 
   ctx.lineWidth = 4;
   ctx.strokeStyle = "#000000";
   ctx.fillStyle = "#abc";
-  ctx.rect(coordinates[0], coordinates[1], coordinates[2], coordinates[3]);
+  ctx.rect(xChord, coordinates[1], coordinates[2], coordinates[3]);
   buttonContext.fill();
+
   ctx.font = "20px Georgia";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillStyle = "#000000";
   ctx.fillText(
     text,
-    coordinates[0] + coordinates[2] / 2,
+    xChord + coordinates[2] / 2,
     coordinates[1] + coordinates[3] / 2
   );
 }
 //createBox(buttonContext, [0, 0, 150, 100, "test"], "test");
-createBox(buttonContext, [0, 380, 150, 100, "Start"], "hjelp");
-console.log(choordsToCheck);
+createBox(buttonContext, [0, 380, 150, 100, "Start"], "Start");
+//console.log(choordsToCheck);
 
 //Initialize blue button to indicate test touch area...
 
@@ -97,9 +167,16 @@ console.log(choordsToCheck);
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
     video.srcObject = stream;
+
     video.play();
   });
 }
+
+
+//***************Initate start******* */
+displayScore.innerHTML="Score: "
+context.drawImage(video, 0, 0, 640, 480);
+  clock.start();
 
 //Gives starting content of manipulation field. Also starts the clock
 document.getElementById("start").addEventListener("click", () => {

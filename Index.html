@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
     <div id="maindiv">
         <h1>WebCam-Test
@@ -8,18 +10,28 @@
         <p id="runtime"></p>
         <p id="score"></p>
         <div style="position: relative; height: 480px;width: 650px;">
-        <video id="video" width="640" height="480" autoplay style="position:absolute; left:0;top:0;"></video>
-        <canvas id="buttonCanvas" width="640" height="480" style="position:absolute; left:0;top:0;"></canvas>
+            <video id="video" width="640" height="480" autoplay style="position:absolute; left:0;top:0; "></video>
+            <canvas id="buttonCanvas" width="640" height="480" style="position:absolute; left:0;top:0;"></canvas>
         </div>
-        <div><button id="start">START</button>
-            <button id="stop">STOP</button></div>
-        
-        <canvas id="canvas" width="640" height="480" ></canvas>
-        <canvas id="prevCanvas" width="640" height="480" ></canvas>
-        
+        <div>
+            <!-- <button id="start">START</button>
+            <button id="stop">STOP</button> -->
+            <p>Once the game is over. plzz press reload</p>
+        </div>
+
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <canvas id="prevCanvas" width="640" height="480"></canvas>
+
         <script src="clock.js"></script>
         <script src="app.js"></script>
         <script src="fucntions.js"></script>
     </div>
 </body>
+
 </html>
+
+<!-- add to sytle to flip-x canvas and video
+-moz-transform: scaleX(-1);
+-o-transform: scaleX(-1);
+-webkit-transform: scaleX(-1);
+transform: scaleX(-1); -->
