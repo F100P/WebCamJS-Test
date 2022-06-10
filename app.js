@@ -179,15 +179,15 @@ context.drawImage(video, 0, 0, 640, 480);
   clock.start();
 
 //Gives starting content of manipulation field. Also starts the clock
-document.getElementById("start").addEventListener("click", () => {
-  context.drawImage(video, 0, 0, 640, 480);
-  clock.start();
-});
+// document.getElementById("start").addEventListener("click", () => {
+//   context.drawImage(video, 0, 0, 640, 480);
+//   clock.start();
+// });
 
-//append clock stop to the stop button
-document.getElementById("stop").addEventListener("click", () => {
-  clock.stop();
-});
+// //append clock stop to the stop button
+// document.getElementById("stop").addEventListener("click", () => {
+//   clock.stop();
+// });
 
 function displayPerwitt() {
   context.drawImage(video, 0, 0, 640, 480);
